@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile-pic">
+                <img src="assets/4.png" alt="Profile Picture">
+            </div>
+            <h1>Abdulaiz Hamdijonov</h1>
+            <p class="title">Backend and Frontend Developer, Web Designer</p>
+            <ul class="contact-info">
+                <li><div class="icon-box"><i class="fas fa-envelope"></i></div> ablaze.coder@proton.me</li>
+                <li><div class="icon-box"><i class="fas fa-phone-alt"></i></div> +998 20 002 90 38</li>
+                <li><div class="icon-box"><i class="fab fa-telegram-plane"></i></div> <a href="https://t.me/ablaze_coder" target="_blank">Telegram</a></li>
+                <li><div class="icon-box"><i class="fab fa-github"></i></div> <a href="https://github.com/ablaze_coder" target="_blank">GitHub</a></li>
+                <li><div class="icon-box"><i class="fab fa-discord"></i></div> <a href="https://discord.com/users/ablaze_coder" target="_blank">Discord</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="https://x.com/blaze_meme_coin"><i class="fab fa-twitter"></i></a>
+            </div>
+        </aside>
+        <main class="content">
+            <nav class="navigation">
+                <a href="index.html">About</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <section class="contact section-box">
+                <h2>Contact Me</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit" id="sendButton" disabled>
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                    <p id="responseMessage" style="color: #f1c40f; margin-top: 10px;"></p>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const messageInput = document.getElementById('message');
+            const sendButton = document.getElementById('sendButton');
+            const responseMessage = document.getElementById('responseMessage');
+
+            function validateForm() {
+                if (nameInput.value && emailInput.value && messageInput.value) {
+                    sendButton.disabled = false;
+                } else {
+                    sendButton.disabled = true;
+                }
+            }
+
+            nameInput.addEventListener('input', validateForm);
+            emailInput.addEventListener('input', validateForm);
+            messageInput.addEventListener('input', validateForm);
+
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+
+                fetch('save_contact.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    responseMessage.textContent = result;
+                    document.getElementById('contactForm').reset();
+                    sendButton.disabled = true;
+                })
+                .catch(error => {
+                    responseMessage.textContent = 'An error occurred. Please try again later.';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
